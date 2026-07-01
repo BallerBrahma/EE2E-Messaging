@@ -12,7 +12,7 @@
 set -euo pipefail
 
 REPO_DIR="/opt/e2ee-platform"
-DOMAIN="${DOMAIN:?Set DOMAIN=your-domain (e.g. yourname.duckdns.org), pointed at this VM's IP}"
+DOMAIN="${DOMAIN:?Set DOMAIN=your-domain (e.g. yourname.duckdns.org), pointed at this VMs IP}"
 
 echo "[1/6] Installing system dependencies..."
 apt-get update
