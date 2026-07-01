@@ -28,6 +28,8 @@ jobs:
         working-directory: frontend
       - run: npm run build
         working-directory: frontend
+        env:
+          VITE_DEFAULT_SERVER_URL: wss://anilbrahmajosyula.duckdns.org
       - uses: actions/upload-pages-artifact@v3
         with:
           path: frontend/dist

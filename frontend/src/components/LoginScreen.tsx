@@ -12,8 +12,10 @@ interface LoginScreenProps {
 const inputClasses =
   'w-full rounded-2xl border border-border bg-input px-4 py-2 text-text-primary outline-none focus:border-accent'
 
+const DEFAULT_SERVER_URL = import.meta.env.VITE_DEFAULT_SERVER_URL ?? 'ws://localhost:8765'
+
 export default function LoginScreen({ onLoggedIn }: LoginScreenProps) {
-  const [server, setServer] = useState('ws://localhost:8765')
+  const [server, setServer] = useState(DEFAULT_SERVER_URL)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [status, setStatus] = useState('')
