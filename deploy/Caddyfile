@@ -1,0 +1,14 @@
+# TLS-terminating reverse proxy for the relay server, so the GitHub Pages
+# frontend (served over https://) can open a wss:// connection to it --
+# browsers block insecure ws:// from a https:// page (mixed content).
+#
+# Caddy auto-obtains and renews a free Let's Encrypt certificate for the
+# domain below and transparently proxies the WebSocket upgrade. Replace
+# the domain with your own (a free DuckDNS subdomain works fine if you
+# don't have one -- see README "Deploying" section), then:
+#   sudo cp deploy/Caddyfile /etc/caddy/Caddyfile
+#   sudo systemctl reload caddy
+
+your-domain.example.com {
+	reverse_proxy localhost:8765
+}

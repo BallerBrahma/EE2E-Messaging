@@ -1,0 +1,111 @@
+@import "tailwindcss";
+
+/* Tailwind's @theme block defines the utility-class tokens (bg-app-bg,
+   text-text-primary, etc.), but each one points at a plain CSS custom
+   property rather than a literal color -- that indirection is what lets
+   the .dark class below swap every color at runtime without regenerating
+   any Tailwind classes. */
+@theme {
+  --font-sans: -apple-system, "Helvetica Neue", Inter, Arial, sans-serif;
+
+  --color-app-bg: var(--app-bg);
+  --color-sidebar: var(--sidebar);
+  --color-chat-area: var(--chat-area);
+  --color-input: var(--input);
+  --color-border: var(--border);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-system: var(--text-system);
+
+  --color-accent-start: var(--accent-start);
+  --color-accent-end: var(--accent-end);
+  --color-accent: var(--accent);
+  --color-danger: var(--danger);
+
+  --color-sent-bubble: var(--sent-bubble);
+  --color-received-bubble: var(--received-bubble);
+
+  --color-hover-row: var(--hover-row);
+  --color-selected-row: var(--selected-row);
+
+  --color-online: var(--online);
+  --color-offline: var(--offline);
+}
+
+/* Light palette (default): warm off-white page, white sidebar, lavender
+   chat area, navy sent bubbles, white received bubbles. */
+:root {
+  --app-bg: #F7F3EF;
+  --sidebar: #FFFFFF;
+  --chat-area: #EEF0FA;
+  --input: #F3F3F8;
+  --border: #E4E4EE;
+
+  --text-primary: #1F2547;
+  --text-secondary: #8A8FA3;
+  --text-system: #9A9EB0;
+
+  --accent-start: #4B4FE8;
+  --accent-end: #8E44C9;
+  --accent: #4B4FE8;
+  --danger: #ED4956;
+
+  --sent-bubble: #2D3359;
+  --received-bubble: #FFFFFF;
+
+  --hover-row: #F7F7FB;
+  --selected-row: #EEF0FA;
+
+  --online: #34D399;
+  --offline: #B0B3BD;
+}
+
+/* Dark palette -- same gradient accent, inverted surfaces. Applied via a
+   `dark` class on <html>, toggled by src/theme.tsx. */
+.dark {
+  --app-bg: #121218;
+  --sidebar: #1A1A21;
+  --chat-area: #1D1D27;
+  --input: #2A2A34;
+  --border: #33333E;
+
+  --text-primary: #F0F0F5;
+  --text-secondary: #9A9EB5;
+  --text-system: #7C7F91;
+
+  --accent-start: #4B4FE8;
+  --accent-end: #8E44C9;
+  --accent: #6366F1;
+  --danger: #F87171;
+
+  --sent-bubble: #4B4FE8;
+  --received-bubble: #2A2A34;
+
+  --hover-row: #24242D;
+  --selected-row: #2C2C38;
+
+  --online: #34D399;
+  --offline: #6B6E7A;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--color-text-primary);
+  background-color: var(--color-app-bg);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+#root {
+  height: 100vh;
+  width: 100vw;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.gradient-accent {
+  background-image: linear-gradient(90deg, var(--color-accent-start), var(--color-accent-end));
+}

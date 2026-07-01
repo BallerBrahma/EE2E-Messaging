@@ -1,0 +1,10 @@
+cryptography>=42.0
+argon2-cffi>=23.1
+websockets>=12.0
+pywebview>=5.0
+pytest>=8.0
+pytest-asyncio>=0.24
+pyspellchecker>=0.8
+keyring>=24.0
+pyobjc-framework-LocalAuthentication>=10.0; sys_platform == 'darwin'
+mnemonic>=0.20
