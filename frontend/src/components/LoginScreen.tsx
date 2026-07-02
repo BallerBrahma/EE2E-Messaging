@@ -29,6 +29,7 @@ export default function LoginScreen({ onLoggedIn }: LoginScreenProps) {
   const [pendingRecoveryPhrase, setPendingRecoveryPhrase] = useState<string | null>(null)
   const [pendingUsername, setPendingUsername] = useState('')
   const [showRecoveryFlow, setShowRecoveryFlow] = useState(false)
+  const [showAdvanced, setShowAdvanced] = useState(false)
 
   useEffect(() => {
     Api.hasBiometricSupport().then(setBiometricSupported)
@@ -156,9 +157,6 @@ export default function LoginScreen({ onLoggedIn }: LoginScreenProps) {
           </div>
         ) : (
           <div className="space-y-4">
-            <Field label="Server">
-              <input className={inputClasses} value={server} onChange={(e) => setServer(e.target.value)} />
-            </Field>
             <Field label="Username">
               <input className={inputClasses} value={username} onChange={(e) => setUsername(e.target.value)} />
             </Field>
@@ -194,12 +192,19 @@ export default function LoginScreen({ onLoggedIn }: LoginScreenProps) {
                 Log in
               </button>
             </div>
-            <button
-              onClick={() => setShowRecoveryFlow(true)}
-              className="w-full text-center text-sm text-text-secondary hover:text-text-primary"
-            >
-              Forgot password?
-            </button>
+            <div className="flex items-center justify-between text-sm">
+              <button onClick={() => setShowRecoveryFlow(true)} className="text-text-secondary hover:text-text-primary">
+                Forgot password?
+              </button>
+              <button onClick={() => setShowAdvanced((v) => !v)} className="text-text-secondary hover:text-text-primary">
+                Advanced
+              </button>
+            </div>
+            {showAdvanced && (
+              <Field label="Server">
+                <input className={inputClasses} value={server} onChange={(e) => setServer(e.target.value)} />
+              </Field>
+            )}
           </div>
         )}
       </div>

@@ -10,8 +10,9 @@
 // "Feature parity" section) -- those methods are harmless stubs, and
 // `has_biometric_support` always returning `false` means LoginScreen.tsx's
 // biometric UI branch simply never renders here, with no UI code change
-// needed. Same for the custom spellchecker: the browser's native
-// `spellcheck` attribute already covers this, so these are no-ops too.
+// needed. The spellcheck/autocorrect methods are backed by engine/
+// spellcheck.ts (nspell + dictionary-en), a real port of client/
+// spellcheck.py -- not a stub.
 
 import type { BackendEvent, ConversationSummary, PywebviewApi, StoredMessage } from '../api'
 import { fromBase64, toBase64 } from './crypto/encoding'
@@ -266,18 +267,32 @@ async function setProfilePicture(dataB64: string, mime: string): Promise<void> {
   await requireSession().manager.setProfilePicture(data, mime)
 }
 
-// -- spellcheck / autocorrect -- native browser spellcheck covers this instead ----------
+// -- spellcheck / autocorrect ------------------------------------------------------------
 
-async function isMisspelled(): Promise<boolean> {
-  return false
+// Lazy-loaded: the dictionary data is a few hundred KB, and nobody needs it
+// before they've logged in and started typing a message -- code-splitting
+// it out keeps that weight off the initial page load for every visitor.
+let spellcheckModulePromise: Promise<typeof import('./spellcheck')> | null = null
+function loadSpellcheck(): Promise<typeof import('./spellcheck')> {
+  if (spellcheckModulePromise === null) {
+    spellcheckModulePromise = import('./spellcheck')
+  }
+  return spellcheckModulePromise
 }
 
-async function spellingSuggestions(): Promise<string[]> {
-  return []
+async function isMisspelled(word: string): Promise<boolean> {
+  const spellcheck = await loadSpellcheck()
+  return spellcheck.isMisspelled(word)
 }
 
-async function autocorrectWord(): Promise<string | null> {
-  return null
+async function spellingSuggestions(word: string): Promise<string[]> {
+  const spellcheck = await loadSpellcheck()
+  return spellcheck.suggestions(word)
+}
+
+async function autocorrectWord(word: string): Promise<string | null> {
+  const spellcheck = await loadSpellcheck()
+  return spellcheck.autocorrectWord(word)
 }
 
 // -- lifecycle --------------------------------------------------------------------------
